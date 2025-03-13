@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Changing HTML Content Using innerHTML</title>
+</head>
+<body>
+    <div id="content">Click the button to chane the text.</div>
+    <button onclick="changeContent()">Change Content</button>
+
+    <script>
+        function changeContent() {
+            let div = document.getElementById("content");
+            div.innerHTML = "<h2>New Content Added</h2>";
+        }
+    </script>
+</body>
+</html>

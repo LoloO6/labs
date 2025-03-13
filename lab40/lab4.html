@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Change image</title>
+</head>
+<body>
+    <img id="image" src="sakura.jpg" alt="Sakura Image" width="600">
+    <button onclick="changeImage()">Change Image</button>
+
+    <script>
+        function changeImage() {
+            let img = document.getElementById("image");
+            img.setAttribute("src", "new.jpg");
+        }
+    </script>
+</body>
+</html>

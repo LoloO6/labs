@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Listener</title>
+</head>
+<body>
+    <button id = "eventBin">Click or Hover</button>
+    <script>
+        let button = document.getElementById('eventBin');
+
+        button.addEventListener('click', function () {
+            button.style.background = "pink";
+        });
+        button.addEventListener('mouseover', function () {
+            button.style.background = "blue";
+        });
+        button.addEventListener('mouseout', function () {
+            button.style.background = "";
+        });
+    </script>
+</body>
+</html>
