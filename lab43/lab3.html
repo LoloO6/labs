@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fade Out Effect</title>
+    <style>
+
+        #fadeText {
+            font-size: 20px;
+            padding: 10px;
+            background-color: lightblue;
+            transition: opacity 1s;
+        }
+    </style>
+</head>
+<body>
+
+    <p id="fadeText">This text will fade out.</p>
+    <button id="fadeButton">Fade Out</button>
+
+    <script>
+        let button = document.getElementById("fadeButton");
+        let text = document.getElementById("fadeText");
+
+        button.onclick = function() {
+            let opacity = 1;
+
+            function fade() {
+                opacity -= 0.05;
+                if (opacity <= 0) {
+                    opacity = 0;
+                    return;
+                }
+
+                text.style.opacity = opacity;
+                setTimeout(fade, 100);
+            }
+
+            fade();
+        };
+    </script>
+
+</body>
+</html>
