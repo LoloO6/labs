@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Edit Task List</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    #taskInput {
+      padding: 8px;
+      width: 200px;
+    }
+    #addTaskBtn {
+      padding: 8px 12px;
+    }
+    ul {
+      margin-top: 20px;
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      margin: 5px 0;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      background-color: #f0f0f0;
+      padding: 5px 10px;
+      border-radius: 4px;
+    }
+    .deleteBtn, .editBtn {
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      color: #007BFF;
+    }
+    .deleteBtn {
+      color: red;
+      font-weight: bold;
+    }
+    .taskText {
+      cursor: pointer;
+      flex-grow: 1;
+    }
+    .completed {
+      text-decoration: line-through;
+      color: gray;
+    }
+    input.editInput {
+      flex-grow: 1;
+      padding: 4px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Task List</h2>
+  <input type="text" id="taskInput" placeholder="Enter a task" />
+  <button id="addTaskBtn">Add Task</button>
+
+  <ul id="taskList"></ul>
+
+  <script>
+    const taskInput = document.getElementById("taskInput");
+    const addTaskBtn = document.getElementById("addTaskBtn");
+    const taskList = document.getElementById("taskList");
+
+    let tasks = [];
+
+    window.addEventListener("DOMContentLoaded", () => {
+      const stored = localStorage.getItem("tasks");
+      if (stored) {
+        tasks = JSON.parse(stored);
+        tasks.forEach(renderTask);
+      }
+    });
+
+    addTaskBtn.addEventListener("click", () => {
+      const text = taskInput.value.trim();
+      if (text !== "") {
+        const task = { text: text, completed: false };
+        tasks.push(task);
+        saveTasks();
+        renderTask(task);
+        taskInput.value = "";
+      }
+    });
+
+    function renderTask(task) {
+      const li = document.createElement("li");
+
+      const taskSpan = document.createElement("span");
+      taskSpan.textContent = task.text;
+      taskSpan.className = "taskText";
+      if (task.completed) taskSpan.classList.add("completed");
+
+      taskSpan.addEventListener("click", () => {
+        taskSpan.classList.toggle("completed");
+        task.completed = !task.completed;
+        saveTasks();
+      });
+
+      const editBtn = document.createElement("button");
+      editBtn.textContent = "✏️ Edit";
+      editBtn.className = "editBtn";
+
+      editBtn.addEventListener("click", () => {
+        const input = document.createElement("input");
+        input.type = "text";
+        input.value = task.text;
+        input.className = "editInput";
+
+        li.replaceChild(input, taskSpan);
+        input.focus();
+
+        input.addEventListener("keydown", (e) => {
+          if (e.key === "Enter") {
+            const newText = input.value.trim();
+            if (newText) {
+              task.text = newText;
+              saveTasks();
+              taskSpan.textContent = newText;
+              li.replaceChild(taskSpan, input);
+            }
+          }
+        });
+      });
+
+      const deleteBtn = document.createElement("button");
+      deleteBtn.textContent = "❌";
+      deleteBtn.className = "deleteBtn";
+      deleteBtn.addEventListener("click", () => {
+        taskList.removeChild(li);
+        tasks = tasks.filter(t => t !== task);
+        saveTasks();
+      });
+
+      li.appendChild(taskSpan);
+      li.appendChild(editBtn);
+      li.appendChild(deleteBtn);
+      taskList.appendChild(li);
+    }
+
+    function saveTasks() {
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+    }
+  </script>
+
+</body>
+</html>

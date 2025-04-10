@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Random Joke Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 30px;
+      text-align: center;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #007BFF;
+      border: none;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    p {
+      font-size: 18px;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>😂 Random Joke Generator</h2>
+  <button id="getJokeBtn">Get Joke</button>
+  <p id="jokeText">Click the button to get a joke!</p>
+
+  <script>
+    const jokeText = document.getElementById("jokeText");
+    const getJokeBtn = document.getElementById("getJokeBtn");
+
+    getJokeBtn.addEventListener("click", () => {
+      jokeText.textContent = "Loading joke...";
+
+      fetch("https://official-joke-api.appspot.com/random_joke")
+        .then(response => {
+          if (!response.ok) {
+            throw new Error("Failed to fetch joke");
+          }
+          return response.json();
+        })
+        .then(joke => {
+          jokeText.textContent = `${joke.setup} — ${joke.punchline}`;
+        })
+        .catch(error => {
+          jokeText.innerHTML = `<span class="error">Error: ${error.message}</span>`;
+        });
+    });
+  </script>
+
+</body>
+</html>
